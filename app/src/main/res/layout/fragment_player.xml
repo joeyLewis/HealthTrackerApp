@@ -1,0 +1,46 @@
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context="com.blogspot.onekeyucd.healthtracker.PlayerFragment">
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:id="@+id/player_name"
+				android:padding="12dp"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true"/>
+
+		<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:backgroundTint="@color/BlanchedAlmond"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="@string/minus"
+				android:id="@+id/health_minus"
+				android:onClick="health_minus"
+				android:layout_centerVertical="true"
+				android:layout_alignParentStart="true"/>
+
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:id="@+id/player_health"
+				android:layout_centerVertical="true"
+				android:layout_centerHorizontal="true"/>
+
+		<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:backgroundTint="@color/BlanchedAlmond"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="@string/plus"
+				android:id="@+id/health_plus"
+				android:onClick="health_plus"
+				android:layout_centerVertical="true"
+				android:layout_alignParentEnd="true"/>
+	</RelativeLayout>
