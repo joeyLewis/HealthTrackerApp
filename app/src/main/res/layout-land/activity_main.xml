@@ -11,21 +11,10 @@
 		android:paddingTop="@dimen/activity_vertical_margin"
 		tools:context="com.blogspot.onekeyucd.healthtracker.MainActivity">
 
-	<Button
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/game_reset"
-			android:id="@+id/gameReset_button"
-			android:layout_alignParentTop="true"
-			android:backgroundTint="@color/BlanchedAlmond"
-			android:onClick="resetGame"
-			android:layout_centerHorizontal="true"/>
-
 	<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="horizontal"
-			android:layout_below="@id/gameReset_button"
 			android:background="@color/colorPrimaryDark"
 			android:baselineAligned="false">
 
