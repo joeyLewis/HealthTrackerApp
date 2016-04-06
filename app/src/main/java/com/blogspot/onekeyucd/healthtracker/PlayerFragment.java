@@ -11,20 +11,19 @@ import android.widget.TextView;
 public class PlayerFragment extends Fragment {
 
 	private static final String ARG_NAME = "name";
-	private static final String ARG_HEALTH = "health";
+	private static final String ARG_CUR_HP = "curHP";
 
-	private static final int DEFAULT_HEALTH = 20;
+	private static final int DEFAULT_HP = 20;
 
 	private String mName;
-	private int mHealth;
+	private int mCurHP;
 
-	private TextView mHealthText;
+	private TextView mCurHPText;
 
-	public static PlayerFragment newInstance(String name, int health) {
+	public static PlayerFragment newInstance(String name) {
 		PlayerFragment fragment = new PlayerFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_NAME, name);
-		args.putInt(ARG_HEALTH, health);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -38,16 +37,15 @@ public class PlayerFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		mName = getResources().getString(R.string.default_name);
-		mHealth = DEFAULT_HEALTH;
+		mCurHP = DEFAULT_HP;
 
 		if(getArguments() != null) {
 			mName = getArguments().getString(ARG_NAME);
-			mHealth = getArguments().getInt(ARG_HEALTH);
 		}
 
 		if(savedInstanceState != null) {
 			mName = savedInstanceState.getString(ARG_NAME);
-			mHealth = savedInstanceState.getInt(ARG_HEALTH);
+			mCurHP = savedInstanceState.getInt(ARG_CUR_HP);
 		}
 	}
 
@@ -69,15 +67,15 @@ public class PlayerFragment extends Fragment {
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putString(ARG_NAME, mName);
-		outState.putInt(ARG_HEALTH, mHealth);
+		outState.putInt(ARG_CUR_HP, mCurHP);
 	}
 
 	private void setupTextViews(View view) {
 		TextView nameText = (TextView)view.findViewById(R.id.player_name);
 		nameText.setText(mName);
 
-		mHealthText = (TextView)view.findViewById(R.id.player_health);
-		mHealthText.setText(Integer.toString(mHealth));
+		mCurHPText = (TextView)view.findViewById(R.id.player_health);
+		mCurHPText.setText(Integer.toString(mCurHP));
 	}
 
 	private void setupMinusButton(View view) {
@@ -85,15 +83,15 @@ public class PlayerFragment extends Fragment {
 		minusButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(mHealth > 0) mHealthText.setText(Integer.toString(--mHealth));
+				if(mCurHP > 0) mCurHPText.setText(Integer.toString(--mCurHP));
 			}
 		});
 
 		minusButton.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				if(mHealth - 5 < 0) mHealthText.setText(Integer.toString(mHealth = 0));
-				else mHealthText.setText(Integer.toString(mHealth -= 5));
+				if(mCurHP - 5 < 0) mCurHPText.setText(Integer.toString(mCurHP = 0));
+				else mCurHPText.setText(Integer.toString(mCurHP -= 5));
 				return true;
 			}
 		});
@@ -104,7 +102,7 @@ public class PlayerFragment extends Fragment {
 		plusButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mHealthText.setText(Integer.toString(++mHealth));
+				mCurHPText.setText(Integer.toString(++mCurHP));
 			}
 		});
 
@@ -112,9 +110,18 @@ public class PlayerFragment extends Fragment {
 			@Override
 			public boolean onLongClick(View v) {
 				// creates a rapidly incrementing look to the TextView, rather than instant change
-				mHealthText.setText(Integer.toString(mHealth += 5));
+				mCurHPText.setText(Integer.toString(mCurHP += 5));
 				return true;
 			}
 		});
+	}
+
+	public void reset() {
+		mCurHP = DEFAULT_HP;
+		mCurHPText.setText(Integer.toString(mCurHP));
+	}
+
+	public String getName() {
+		return mName;
 	}
 }

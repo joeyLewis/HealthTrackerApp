@@ -1,6 +1,7 @@
 <resources>
 	<string name="app_name">HealthTracker</string>
 	<string name="default_name">Player</string>
+	<string name="action_reset">Reset Game</string>
 	<string name="minus"> - </string>
 	<string name="plus"> + </string>
 </resources>
