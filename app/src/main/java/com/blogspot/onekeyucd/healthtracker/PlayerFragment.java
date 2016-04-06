@@ -13,7 +13,7 @@ public class PlayerFragment extends Fragment {
 	private static final String ARG_NAME = "name";
 	private static final String ARG_CUR_HP = "curHP";
 
-	private static final int DEFAULT_HEALTH = 20;
+	private static final int DEFAULT_HP = 20;
 
 	private String mName;
 	private int mCurHP;
@@ -38,7 +38,7 @@ public class PlayerFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		mName = getResources().getString(R.string.default_name);
-		mCurHP = DEFAULT_HEALTH;
+		mCurHP = DEFAULT_HP;
 
 		if(getArguments() != null) {
 			mName = getArguments().getString(ARG_NAME);
@@ -118,8 +118,8 @@ public class PlayerFragment extends Fragment {
 		});
 	}
 
-	public void setCurHP(int hp) {
-		mCurHP = hp;
+	public void reset() {
+		mCurHP = DEFAULT_HP;
 		mCurHPText.setText(Integer.toString(mCurHP));
 	}
 }

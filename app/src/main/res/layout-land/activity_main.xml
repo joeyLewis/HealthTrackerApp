@@ -34,7 +34,7 @@
 				android:id="@+id/player1_fragment"
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
-				android:layout_weight="4"
+				android:layout_weight="1"
 				android:layout_margin="3dp"
 				tools:layout="@layout/fragment_player"/>
 
@@ -43,7 +43,7 @@
 				android:id="@+id/player2_fragment"
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
-				android:layout_weight="4"
+				android:layout_weight="1"
 				android:layout_margin="3dp"
 				tools:layout="@layout/fragment_player"/>
 
