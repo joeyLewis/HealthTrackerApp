@@ -20,11 +20,10 @@ public class PlayerFragment extends Fragment {
 
 	private TextView mCurHPText;
 
-	public static PlayerFragment newInstance(String name, int health) {
+	public static PlayerFragment newInstance(String name) {
 		PlayerFragment fragment = new PlayerFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_NAME, name);
-		args.putInt(ARG_CUR_HP, health);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -42,7 +41,6 @@ public class PlayerFragment extends Fragment {
 
 		if(getArguments() != null) {
 			mName = getArguments().getString(ARG_NAME);
-			mCurHP = getArguments().getInt(ARG_CUR_HP);
 		}
 
 		if(savedInstanceState != null) {
@@ -121,5 +119,9 @@ public class PlayerFragment extends Fragment {
 	public void reset() {
 		mCurHP = DEFAULT_HP;
 		mCurHPText.setText(Integer.toString(mCurHP));
+	}
+
+	public String getName() {
+		return mName;
 	}
 }

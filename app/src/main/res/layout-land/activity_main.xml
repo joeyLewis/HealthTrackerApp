@@ -16,26 +16,7 @@
 			android:layout_height="match_parent"
 			android:orientation="horizontal"
 			android:background="@color/colorPrimaryDark"
-			android:baselineAligned="false">
-
-		<fragment
-				android:name="com.blogspot.onekeyucd.healthtracker.PlayerFragment"
-				android:id="@+id/player1_fragment"
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_margin="3dp"
-				tools:layout="@layout/fragment_player"/>
-
-		<fragment
-				android:name="com.blogspot.onekeyucd.healthtracker.PlayerFragment"
-				android:id="@+id/player2_fragment"
-				android:layout_width="0dp"
-				android:layout_height="match_parent"
-				android:layout_weight="1"
-				android:layout_margin="3dp"
-				tools:layout="@layout/fragment_player"/>
-
-	</LinearLayout>
+			android:id="@+id/player_container"
+			android:baselineAligned="false"/>
 
 </RelativeLayout>
