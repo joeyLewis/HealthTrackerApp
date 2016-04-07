@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
 		if(mFragmentManager.getFragments() == null) {
 			for(int i = 0; i < numPlayers; i++) {
-				PlayerFragment player = PlayerFragment.newInstance("Player " + Integer.toString(i + 1));
-				mFragmentManager.beginTransaction()
-												.add(R.id.player_container, player, player.getName()).commit();
+				PlayerFragment playerToAdd =
+						PlayerFragment.newInstance("Player " + Integer.toString(i + 1));
+				addPlayer(playerToAdd);
 			}
 		}
 	}
@@ -47,19 +47,17 @@ public class MainActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_reset:
-				for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
-					((PlayerFragment)player).reset();
-				}
-				return true;
+				return actionReset();
 			case R.id.action_add_player:
-				addPlayer();
-				return true;
+				return actionAddPlayer();
 			case R.id.action_remove_player:
-				removePlayer();
-				return true;
+				return actionRemovePlayer();
+			case R.id.action_save_game:
+				return actionSaveGame();
+			case R.id.action_load_game:
+				return actionLoadGame();
 			default:
 				return super.onOptionsItemSelected(item);
-
 		}
 	}
 
@@ -69,31 +67,73 @@ public class MainActivity extends AppCompatActivity {
 		outState.putInt(ARG_NUM_PLAYERS, numPlayers);
 	}
 
-	private void addPlayer() {
+	private boolean actionReset() {
+		for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
+			((PlayerFragment)player).reset();
+		}
+		return true;
+	}
+
+	private boolean actionAddPlayer() {
 		if(numPlayers < 4) {
 			PlayerFragment playerToAdd =
-							PlayerFragment.newInstance("Player " + Integer.toString(++numPlayers));
-			mFragmentManager.beginTransaction()
-											.add(R.id.player_container, playerToAdd, playerToAdd.getName()).commit();
+					PlayerFragment.newInstance("Player " + Integer.toString(++numPlayers));
+			addPlayer(playerToAdd);
 		} else {
 			Toast.makeText(getApplicationContext(),
 			               getResources().getString(R.string.message_tooManyPlayers),
 						   Toast.LENGTH_SHORT)
 					.show();
 		}
+		return true;
 	}
 
-	private void removePlayer() {
+	private boolean actionRemovePlayer() {
 		if(numPlayers > 1) {
 			PlayerFragment playerToRemove =
-							(PlayerFragment)mFragmentManager.getFragments().get(--numPlayers);
-			mFragmentManager.beginTransaction()
-											.remove(playerToRemove).commit();
+					(PlayerFragment)mFragmentManager.getFragments().get(--numPlayers);
+			removePlayer(playerToRemove);
 		} else {
 			Toast.makeText(getApplicationContext(),
 			               getResources().getString(R.string.message_tooFewPlayers),
 						   Toast.LENGTH_SHORT)
 					.show();
 		}
+		return true;
+	}
+
+	private boolean actionSaveGame() {
+		FileSystem.writeNewSave(getApplicationContext());
+		for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
+			((PlayerFragment)player).save();
+		}
+		return true;
+	}
+
+	private boolean actionLoadGame() {
+		for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
+			removePlayer((PlayerFragment)player);
+			numPlayers--;
+		}
+
+		for(PlayerFragment player : FileSystem.getLastGame(getApplicationContext())) {
+			mFragmentManager.beginTransaction()
+							.add(R.id.player_container, player, player.getName())
+							.commit();
+			numPlayers++;
+		}
+		return true;
+	}
+
+	private void addPlayer(PlayerFragment playerToAdd) {
+		mFragmentManager.beginTransaction()
+				.add(R.id.player_container, playerToAdd, playerToAdd.getName())
+				.commit();
+	}
+
+	private void removePlayer(PlayerFragment playerToRemove) {
+		mFragmentManager.beginTransaction()
+				.remove(playerToRemove)
+				.commit();
 	}
 }

@@ -4,6 +4,8 @@
 	<string name="action_reset">Reset Game</string>
 	<string name="action_add_player">Add Player</string>
 	<string name="action_remove_player">Remove Player</string>
+	<string name="action_save_game">Save Current Game</string>
+	<string name="action_load_game">Load Last Saved Game</string>
 	<string name="message_tooManyPlayers">Game cannot be more than four players</string>
 	<string name="message_tooFewPlayers">Game cannot be less than one player </string>
 	<string name="minus"> - </string>

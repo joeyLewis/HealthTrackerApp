@@ -20,13 +20,23 @@ public class PlayerFragment extends Fragment {
 
 	private TextView mCurHPText;
 
-	public static PlayerFragment newInstance(String name) {
+	public static PlayerFragment newInstance(String name, int curHP) {
 		PlayerFragment fragment = new PlayerFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_NAME, name);
+        args.putInt(ARG_CUR_HP, curHP);
 		fragment.setArguments(args);
 		return fragment;
 	}
+
+    public static PlayerFragment newInstance(String name) {
+        PlayerFragment fragment = new PlayerFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_NAME, name);
+        args.putInt(ARG_CUR_HP, DEFAULT_HP);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 	public PlayerFragment() {
 		// Required empty public constructor
@@ -41,6 +51,7 @@ public class PlayerFragment extends Fragment {
 
 		if(getArguments() != null) {
 			mName = getArguments().getString(ARG_NAME);
+            mCurHP = getArguments().getInt(ARG_CUR_HP);
 		}
 
 		if(savedInstanceState != null) {
@@ -121,7 +132,15 @@ public class PlayerFragment extends Fragment {
 		mCurHPText.setText(Integer.toString(mCurHP));
 	}
 
+	public void save() {
+		FileSystem.savePlayer(this, getActivity().getApplicationContext());
+	}
+
 	public String getName() {
 		return mName;
+	}
+
+	public int getHP() {
+		return mCurHP;
 	}
 }

@@ -3,21 +3,32 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
 	<item
-			android:id="@+id/action_reset"
-			android:icon="@drawable/ic_action_reset"
-			android:title="@string/action_reset"
-			app:showAsAction="ifRoom"/>
+		android:id="@+id/action_reset"
+		android:icon="@drawable/ic_action_reset"
+		android:title="@string/action_reset"
+		app:showAsAction="ifRoom"/>
 
 	<item
-			android:id="@+id/action_add_player"
-			android:icon="@drawable/ic_action_plus"
-			android:title="@string/action_add_player"
-			app:showAsAction="ifRoom"/>
+		android:id="@+id/action_add_player"
+		android:icon="@drawable/ic_action_plus"
+		android:title="@string/action_add_player"
+		app:showAsAction="ifRoom"/>
 
 	<item
-			android:id="@+id/action_remove_player"
-			android:icon="@drawable/ic_action_remove"
-			android:title="@string/action_remove_player"
-			app:showAsAction="ifRoom"/>
+		android:id="@+id/action_remove_player"
+		android:icon="@drawable/ic_action_remove"
+		android:title="@string/action_remove_player"
+		app:showAsAction="ifRoom"/>
+
+	<item
+		android:id="@+id/action_save_game"
+		android:icon="@drawable/ic_action_savegame"
+		android:title="@string/action_save_game"
+		app:showAsAction="ifRoom"/>
+
+	<item
+		android:id="@+id/action_load_game"
+		android:title="@string/action_load_game"
+		app:showAsAction="never"/>
 
 </menu>
