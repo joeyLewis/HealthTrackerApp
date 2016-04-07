@@ -77,6 +77,7 @@ public class PlayerFragment extends Fragment {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 		outState.putString(ARG_NAME, mName);
 		outState.putInt(ARG_CUR_HP, mCurHP);
 	}

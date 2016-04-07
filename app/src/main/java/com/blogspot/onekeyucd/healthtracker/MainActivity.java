@@ -11,27 +11,25 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
 	private static final String ARG_NUM_PLAYERS = "num_players";
-	private static final int DEFAULT_PLAYERS = 2;
 
 	private int numPlayers;
 
-	private FragmentManager mFragmentManager;
+	private FragmentManager mFragmentManager = getSupportFragmentManager();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		numPlayers = DEFAULT_PLAYERS;
+		numPlayers = 2;
 		if(savedInstanceState != null) numPlayers = savedInstanceState.getInt(ARG_NUM_PLAYERS);
 
-		mFragmentManager = getSupportFragmentManager();
-
-		if(mFragmentManager.getFragments() == null) {
-			for(int i = 0; i < numPlayers; i++) {
-				PlayerFragment playerToAdd =
-						PlayerFragment.newInstance("Player " + Integer.toString(i + 1));
-				addPlayer(playerToAdd);
+		if(savedInstanceState == null) {
+			for (int i = 0; i < numPlayers; i++) {
+				PlayerFragment playerToAdd = PlayerFragment.newInstance("Player " + Integer.toString(i + 1));
+				mFragmentManager.beginTransaction()
+						.add(R.id.player_container, playerToAdd, playerToAdd.getName())
+						.commit();
 			}
 		}
 	}
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 	private boolean actionAddPlayer() {
 		if(numPlayers < 4) {
 			PlayerFragment playerToAdd =
-					PlayerFragment.newInstance("Player " + Integer.toString(++numPlayers));
+					PlayerFragment.newInstance("Player " + Integer.toString(numPlayers + 1));
 			addPlayer(playerToAdd);
 		} else {
 			Toast.makeText(getApplicationContext(),
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 	private boolean actionRemovePlayer() {
 		if(numPlayers > 1) {
 			PlayerFragment playerToRemove =
-					(PlayerFragment)mFragmentManager.getFragments().get(--numPlayers);
+					(PlayerFragment)mFragmentManager.getFragments().get(numPlayers - 1);
 			removePlayer(playerToRemove);
 		} else {
 			Toast.makeText(getApplicationContext(),
@@ -113,27 +111,25 @@ public class MainActivity extends AppCompatActivity {
 	private boolean actionLoadGame() {
 		for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
 			removePlayer((PlayerFragment)player);
-			numPlayers--;
 		}
 
 		for(PlayerFragment player : FileSystem.getLastGame(getApplicationContext())) {
-			mFragmentManager.beginTransaction()
-							.add(R.id.player_container, player, player.getName())
-							.commit();
-			numPlayers++;
+			addPlayer(player);
 		}
 		return true;
 	}
 
 	private void addPlayer(PlayerFragment playerToAdd) {
 		mFragmentManager.beginTransaction()
-				.add(R.id.player_container, playerToAdd, playerToAdd.getName())
-				.commit();
+						.add(R.id.player_container, playerToAdd, playerToAdd.getName())
+						.commit();
+		numPlayers++;
 	}
 
 	private void removePlayer(PlayerFragment playerToRemove) {
 		mFragmentManager.beginTransaction()
-				.remove(playerToRemove)
-				.commit();
+						.remove(playerToRemove)
+						.commit();
+		numPlayers--;
 	}
 }

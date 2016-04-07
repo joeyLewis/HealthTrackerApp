@@ -25,6 +25,7 @@ public class FileSystem {
 
     private static final String sortOrder =
             SaveGameContract.SaveGameEntry.COLUMN_NAME_PLAYER_NAME + " ASC";
+
     public static List<PlayerFragment> getLastGame(Context context) {
 
         List<PlayerFragment> players = new ArrayList<>();
