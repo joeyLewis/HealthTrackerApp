@@ -2,11 +2,11 @@ package com.blogspot.onekeyucd.healthtracker;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
 							PlayerFragment.newInstance("Player " + Integer.toString(++numPlayers));
 			mFragmentManager.beginTransaction()
 											.add(R.id.player_container, playerToAdd, playerToAdd.getName()).commit();
+		} else {
+			Toast.makeText(getApplicationContext(),
+			               getResources().getString(R.string.message_tooManyPlayers),
+						   Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
 
@@ -84,6 +89,11 @@ public class MainActivity extends AppCompatActivity {
 							(PlayerFragment)mFragmentManager.getFragments().get(--numPlayers);
 			mFragmentManager.beginTransaction()
 											.remove(playerToRemove).commit();
+		} else {
+			Toast.makeText(getApplicationContext(),
+			               getResources().getString(R.string.message_tooFewPlayers),
+						   Toast.LENGTH_SHORT)
+					.show();
 		}
 	}
 }
