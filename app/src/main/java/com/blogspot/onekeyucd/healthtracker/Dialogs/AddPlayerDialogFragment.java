@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.blogspot.onekeyucd.healthtracker.PlayerFragment;
 import com.blogspot.onekeyucd.healthtracker.R;
 
 public class AddPlayerDialogFragment extends DialogFragment {

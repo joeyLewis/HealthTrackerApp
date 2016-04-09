@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
 
 	private boolean actionReset() {
 		for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
-			((PlayerFragment)player).reset();
+			if(player != null) ((PlayerFragment)player).reset();
 		}
 		return true;
 	}
@@ -129,35 +129,33 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
 	}
 
 	private void choosePlayerToRemove() {
-        PlayerFragment playerToRemove =
-                (PlayerFragment)mFragmentManager.getFragments().get(numPlayers - 1);
+        mFragmentManager = getSupportFragmentManager();
+        PlayerFragment playerToRemove = (PlayerFragment)mFragmentManager.getFragments().get(numPlayers - 1);
         removePlayer(playerToRemove);
 	}
 
 	private void addPlayer(PlayerFragment playerToAdd) {
-		try {
+		if(playerToAdd != null) {
             mFragmentManager.beginTransaction()
                     .add(R.id.player_container, playerToAdd, playerToAdd.getName())
                     .commit();
             numPlayers++;
-        } catch (Exception e) {
+        } else {
             Toast.makeText(getApplicationContext(), R.string.failed_add, Toast.LENGTH_SHORT)
                     .show();
-            e.printStackTrace();
         }
 
 	}
 
 	private void removePlayer(PlayerFragment playerToRemove) {
-        try {
+        if(playerToRemove != null) {
             mFragmentManager.beginTransaction()
                     .remove(playerToRemove)
                     .commit();
             numPlayers--;
-        } catch (Exception e) {
+        } else {
             Toast.makeText(getApplicationContext(), R.string.failed_remove, Toast.LENGTH_SHORT)
                     .show();
-            e.printStackTrace();
         }
 	}
 
