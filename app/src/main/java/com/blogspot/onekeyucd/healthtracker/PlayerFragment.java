@@ -12,19 +12,32 @@ public class PlayerFragment extends Fragment {
 
 	private static final String ARG_NAME = "name";
 	private static final String ARG_CUR_HP = "curHP";
+	private static final String ARG_DEFAULT_HP = "defaultHP";
 
 	private static final int DEFAULT_HP = 20;
 
 	private String mName;
 	private int mCurHP;
+	private int mDefaultHP;
 
 	private TextView mCurHPText;
+
+	public static PlayerFragment newInstance(String name, int curHP, int defaultHP) {
+		PlayerFragment fragment = new PlayerFragment();
+		Bundle args = new Bundle();
+		args.putString(ARG_NAME, name);
+		args.putInt(ARG_CUR_HP, curHP);
+		args.putInt(ARG_DEFAULT_HP, defaultHP);
+		fragment.setArguments(args);
+		return fragment;
+	}
 
 	public static PlayerFragment newInstance(String name, int curHP) {
 		PlayerFragment fragment = new PlayerFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_NAME, name);
         args.putInt(ARG_CUR_HP, curHP);
+		args.putInt(ARG_DEFAULT_HP, DEFAULT_HP);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -34,6 +47,7 @@ public class PlayerFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(ARG_NAME, name);
         args.putInt(ARG_CUR_HP, DEFAULT_HP);
+		args.putInt(ARG_DEFAULT_HP, DEFAULT_HP);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,15 +62,18 @@ public class PlayerFragment extends Fragment {
 
 		mName = getResources().getString(R.string.default_name);
 		mCurHP = DEFAULT_HP;
+		mDefaultHP = DEFAULT_HP;
 
 		if(getArguments() != null) {
 			mName = getArguments().getString(ARG_NAME);
             mCurHP = getArguments().getInt(ARG_CUR_HP);
+			mDefaultHP = getArguments().getInt(ARG_DEFAULT_HP);
 		}
 
 		if(savedInstanceState != null) {
 			mName = savedInstanceState.getString(ARG_NAME);
 			mCurHP = savedInstanceState.getInt(ARG_CUR_HP);
+			mDefaultHP = savedInstanceState.getInt(ARG_DEFAULT_HP);
 		}
 	}
 
@@ -80,6 +97,7 @@ public class PlayerFragment extends Fragment {
         super.onSaveInstanceState(outState);
 		outState.putString(ARG_NAME, mName);
 		outState.putInt(ARG_CUR_HP, mCurHP);
+		outState.putInt(ARG_DEFAULT_HP, mDefaultHP);
 	}
 
 	private void setupTextViews(View view) {
@@ -129,7 +147,7 @@ public class PlayerFragment extends Fragment {
 	}
 
 	public void reset() {
-		mCurHP = DEFAULT_HP;
+		mCurHP = mDefaultHP;
 		mCurHPText.setText(Integer.toString(mCurHP));
 	}
 

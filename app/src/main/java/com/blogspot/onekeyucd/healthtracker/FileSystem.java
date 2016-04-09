@@ -14,9 +14,6 @@ import java.util.List;
 
 public class FileSystem {
 
-    private static final String FAILED_SAVE = "Failed to save: ";
-    private static final String FAILED_LOAD = "Failed to load";
-
     private static final String[] projection = {
             SaveGameContract.SaveGameEntry._ID,
             SaveGameContract.SaveGameEntry.COLUMN_NAME_PLAYER_NAME,
@@ -47,7 +44,7 @@ public class FileSystem {
             }
             c.close();
         } catch (Exception e) {
-            Toast.makeText(context, FAILED_LOAD, Toast.LENGTH_SHORT)
+            Toast.makeText(context, R.string.failed_load, Toast.LENGTH_SHORT)
                     .show();
             e.printStackTrace();
         }
@@ -69,7 +66,7 @@ public class FileSystem {
             values.put(SaveGameContract.SaveGameEntry.COLUMN_NAME_PLAYER_HP, player.getHP());
             db.insert(SaveGameContract.SaveGameEntry.TABLE_NAME, "null", values);
         } catch (Exception e) {
-            Toast.makeText(context, FAILED_SAVE + player.getName(), Toast.LENGTH_SHORT)
+            Toast.makeText(context, R.string.failed_save + player.getName(), Toast.LENGTH_SHORT)
                     .show();
             e.printStackTrace();
         }

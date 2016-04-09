@@ -1,5 +1,6 @@
 package com.blogspot.onekeyucd.healthtracker;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,13 +9,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.blogspot.onekeyucd.healthtracker.Dialogs.AddPlayerDialogFragment;
+import com.blogspot.onekeyucd.healthtracker.Dialogs.DialogListener;
+
+public class MainActivity extends AppCompatActivity implements DialogListener {
 
 	private static final String ARG_NUM_PLAYERS = "num_players";
 
 	private int numPlayers;
 
 	private FragmentManager mFragmentManager = getSupportFragmentManager();
+    private AddPlayerDialogFragment addPlayer;
+    //private RemovePlayerDialogFragment removePlayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +32,15 @@ public class MainActivity extends AppCompatActivity {
 
 		if(savedInstanceState == null) {
 			for (int i = 0; i < numPlayers; i++) {
-				PlayerFragment playerToAdd = PlayerFragment.newInstance("Player " + Integer.toString(i + 1));
+				PlayerFragment playerToAdd = PlayerFragment.newInstance("Default Player " + Integer.toString(i + 1));
 				mFragmentManager.beginTransaction()
 						.add(R.id.player_container, playerToAdd, playerToAdd.getName())
 						.commit();
 			}
 		}
+
+        addPlayer = new AddPlayerDialogFragment();
+        //removePlayer = new RemovePlayerDialogFragment();
 	}
 
 	@Override
@@ -74,9 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private boolean actionAddPlayer() {
 		if(numPlayers < 4) {
-			PlayerFragment playerToAdd =
-					PlayerFragment.newInstance("Player " + Integer.toString(numPlayers + 1));
-			addPlayer(playerToAdd);
+			makePlayerToAdd();
 		} else {
 			Toast.makeText(getApplicationContext(),
 			               getResources().getString(R.string.message_tooManyPlayers),
@@ -88,9 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private boolean actionRemovePlayer() {
 		if(numPlayers > 1) {
-			PlayerFragment playerToRemove =
-					(PlayerFragment)mFragmentManager.getFragments().get(numPlayers - 1);
-			removePlayer(playerToRemove);
+            choosePlayerToRemove();
 		} else {
 			Toast.makeText(getApplicationContext(),
 			               getResources().getString(R.string.message_tooFewPlayers),
@@ -119,17 +124,57 @@ public class MainActivity extends AppCompatActivity {
 		return true;
 	}
 
+	private void makePlayerToAdd() {
+        addPlayer.show(mFragmentManager, "Add Player");
+	}
+
+	private void choosePlayerToRemove() {
+        PlayerFragment playerToRemove =
+                (PlayerFragment)mFragmentManager.getFragments().get(numPlayers - 1);
+        removePlayer(playerToRemove);
+	}
+
 	private void addPlayer(PlayerFragment playerToAdd) {
-		mFragmentManager.beginTransaction()
-						.add(R.id.player_container, playerToAdd, playerToAdd.getName())
-						.commit();
-		numPlayers++;
+		try {
+            mFragmentManager.beginTransaction()
+                    .add(R.id.player_container, playerToAdd, playerToAdd.getName())
+                    .commit();
+            numPlayers++;
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), R.string.failed_add, Toast.LENGTH_SHORT)
+                    .show();
+            e.printStackTrace();
+        }
+
 	}
 
 	private void removePlayer(PlayerFragment playerToRemove) {
-		mFragmentManager.beginTransaction()
-						.remove(playerToRemove)
-						.commit();
-		numPlayers--;
+        try {
+            mFragmentManager.beginTransaction()
+                    .remove(playerToRemove)
+                    .commit();
+            numPlayers--;
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), R.string.failed_remove, Toast.LENGTH_SHORT)
+                    .show();
+            e.printStackTrace();
+        }
 	}
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        if(dialog != null) {
+            if(dialog.equals(addPlayer)) {
+                PlayerFragment playerToAdd = PlayerFragment.newInstance(addPlayer.name, addPlayer.defaultHP, addPlayer.defaultHP);
+                addPlayer(playerToAdd);
+            }/* else if(dialogFragment == removePlayer) {
+
+            }*/
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialogFragment) {
+        // do nothing instead :D
+    }
 }

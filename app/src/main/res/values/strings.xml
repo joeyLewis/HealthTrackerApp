@@ -1,13 +1,24 @@
 <resources>
-	<string name="app_name">Hit Point Tracker</string>
-	<string name="default_name">Player</string>
-	<string name="action_reset">Reset Game</string>
-	<string name="action_add_player">Add Player</string>
-	<string name="action_remove_player">Remove Player</string>
-	<string name="action_save_game">Save Current Game</string>
-	<string name="action_load_game">Load Last Saved Game</string>
-	<string name="message_tooManyPlayers">Game cannot be more than four players</string>
-	<string name="message_tooFewPlayers">Game cannot be less than one player </string>
-	<string name="minus"> - </string>
-	<string name="plus"> + </string>
+    <string name="app_name">Hit Point Tracker</string>
+    <string name="default_name">Player</string>
+    <string name="action_reset">Reset Game</string>
+    <string name="action_add_player">Add Player</string>
+    <string name="dialog_add_player">Make a New Player</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="action_remove_player">Remove Player</string>
+    <string name="action_save_game">Save Current Game</string>
+    <string name="action_load_game">Load Last Saved Game</string>
+    <string name="message_tooManyPlayers">Game cannot be more than four players</string>
+    <string name="message_tooFewPlayers">Game cannot be less than one player </string>
+    <string name="minus"> - </string>
+    <string name="plus"> + </string>
+
+    <string name="hint_add_name">Type a player name&#8230;</string>
+    <string name="hint_add_health">Type a default health&#8230;</string>
+
+    <string name="failed_save">Failed to save: </string>
+    <string name="failed_load">Failed to load game</string>
+    <string name="failed_add">Failed to add player</string>
+    <string name="failed_remove">Failed to remove player</string>
 </resources>
