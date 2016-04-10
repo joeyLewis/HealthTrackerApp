@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class PlayerFragment extends Fragment {
 
-	private static final String ARG_NAME = "name";
+	public static final String ARG_NAME = "name";
 	private static final String ARG_CUR_HP = "curHP";
 	private static final String ARG_DEFAULT_HP = "defaultHP";
 

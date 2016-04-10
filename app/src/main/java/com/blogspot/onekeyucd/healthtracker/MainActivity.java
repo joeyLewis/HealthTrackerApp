@@ -2,15 +2,13 @@ package com.blogspot.onekeyucd.healthtracker;
 
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.blogspot.onekeyucd.healthtracker.Dialogs.AddPlayerDialogFragment;
-import com.blogspot.onekeyucd.healthtracker.Dialogs.DialogListener;
+import com.blogspot.onekeyucd.healthtracker.Dialogs.*;
 
 public class MainActivity extends AppCompatActivity implements DialogListener {
 
@@ -18,29 +16,26 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
 
 	private int numPlayers;
 
-	private FragmentManager mFragmentManager = getSupportFragmentManager();
     private AddPlayerDialogFragment addPlayer;
-    //private RemovePlayerDialogFragment removePlayer;
+    private RemovePlayerDialogFragment removePlayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		numPlayers = 2;
+		numPlayers = 0;
 		if(savedInstanceState != null) numPlayers = savedInstanceState.getInt(ARG_NUM_PLAYERS);
 
 		if(savedInstanceState == null) {
-			for (int i = 0; i < numPlayers; i++) {
+			for (int i = 0; i < 2; i++) {
 				PlayerFragment playerToAdd = PlayerFragment.newInstance("Default Player " + Integer.toString(i + 1));
-				mFragmentManager.beginTransaction()
-						.add(R.id.player_container, playerToAdd, playerToAdd.getName())
-						.commit();
+				addPlayer(playerToAdd);
 			}
 		}
 
         addPlayer = new AddPlayerDialogFragment();
-        //removePlayer = new RemovePlayerDialogFragment();
+        removePlayer = new RemovePlayerDialogFragment();
 	}
 
 	@Override
@@ -75,15 +70,15 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
 	}
 
 	private boolean actionReset() {
-		for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
-			if(player != null) ((PlayerFragment)player).reset();
+		for(Fragment player : getSupportFragmentManager().getFragments()) {
+			if(player instanceof PlayerFragment) ((PlayerFragment)player).reset();
 		}
 		return true;
 	}
 
 	private boolean actionAddPlayer() {
 		if(numPlayers < 4) {
-			makePlayerToAdd();
+			addPlayer.show(getSupportFragmentManager().beginTransaction(), "Add Player");
 		} else {
 			Toast.makeText(getApplicationContext(),
 			               getResources().getString(R.string.message_tooManyPlayers),
@@ -95,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
 
 	private boolean actionRemovePlayer() {
 		if(numPlayers > 1) {
-            choosePlayerToRemove();
+            removePlayer.show(getSupportFragmentManager().beginTransaction(), "Remove Player");
 		} else {
 			Toast.makeText(getApplicationContext(),
 			               getResources().getString(R.string.message_tooFewPlayers),
@@ -107,15 +102,15 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
 
 	private boolean actionSaveGame() {
 		FileSystem.writeNewSave(getApplicationContext());
-		for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
-			((PlayerFragment)player).save();
+		for(Fragment player : getSupportFragmentManager().getFragments()) {
+			if(player instanceof PlayerFragment) ((PlayerFragment)player).save();
 		}
 		return true;
 	}
 
 	private boolean actionLoadGame() {
-		for(Fragment player : mFragmentManager.getFragments().subList(0, numPlayers)) {
-			removePlayer((PlayerFragment)player);
+		for(Fragment player : getSupportFragmentManager().getFragments()) {
+			if(player instanceof PlayerFragment) removePlayer((PlayerFragment)player);
 		}
 
 		for(PlayerFragment player : FileSystem.getLastGame(getApplicationContext())) {
@@ -124,20 +119,11 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
 		return true;
 	}
 
-	private void makePlayerToAdd() {
-        addPlayer.show(mFragmentManager, "Add Player");
-	}
-
-	private void choosePlayerToRemove() {
-        mFragmentManager = getSupportFragmentManager();
-        PlayerFragment playerToRemove = (PlayerFragment)mFragmentManager.getFragments().get(numPlayers - 1);
-        removePlayer(playerToRemove);
-	}
-
 	private void addPlayer(PlayerFragment playerToAdd) {
 		if(playerToAdd != null) {
-            mFragmentManager.beginTransaction()
-                    .add(R.id.player_container, playerToAdd, playerToAdd.getName())
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.player_container, playerToAdd, playerToAdd.getArguments().getString(playerToAdd.ARG_NAME))
+                    .addToBackStack(playerToAdd.getArguments().getString(playerToAdd.ARG_NAME))
                     .commit();
             numPlayers++;
         } else {
@@ -149,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
 
 	private void removePlayer(PlayerFragment playerToRemove) {
         if(playerToRemove != null) {
-            mFragmentManager.beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .remove(playerToRemove)
                     .commit();
             numPlayers--;
@@ -165,9 +151,10 @@ public class MainActivity extends AppCompatActivity implements DialogListener {
             if(dialog.equals(addPlayer)) {
                 PlayerFragment playerToAdd = PlayerFragment.newInstance(addPlayer.name, addPlayer.defaultHP, addPlayer.defaultHP);
                 addPlayer(playerToAdd);
-            }/* else if(dialogFragment == removePlayer) {
-
-            }*/
+            } else if(dialog.equals(removePlayer)) {
+				PlayerFragment playerToRemove = (PlayerFragment)getSupportFragmentManager().findFragmentByTag(removePlayer.name);
+				removePlayer(playerToRemove);
+            }
         }
     }
 
